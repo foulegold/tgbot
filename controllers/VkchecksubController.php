@@ -83,7 +83,7 @@ class VkchecksubController extends \yii\web\Controller
                     $text_photo .= '[ ](' . $val . ')';
                 }
 
-                // TODO: 11Обработать текст поста на символы, используемые в parse_mode
+                // TODO: Обработать текст поста на символы, используемые в parse_mode
                 $answ_opt = [
                     'chat_id' => $user_id,
                     'text' => $item_row['text'],
