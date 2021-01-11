@@ -13,7 +13,33 @@ nbproject
 Thumbs.db
 
 # composer vendor dir
-/vendor
+/vendor/behat
+/vendor/bin
+/vendor/bower-asset
+/vendor/cebe
+/vendor/codeception
+/vendor/composer
+/vendor/doctrine
+/vendor/egulias
+/vendor/ezyang
+/vendor/fakerphp
+/vendor/guzzlehttp
+/vendor/myclabs
+/vendor/opis
+/vendor/phar-io
+/vendor/phpdocumentor
+/vendor/phpspec
+/vendor/phpunit
+/vendor/psr
+/vendor/ralouphie
+/vendor/sebastian
+/vendor/swiftmailer
+/vendor/symfony
+/vendor/theseer
+/vendor/webmozart
+/vendor/yiisoft
+/vendor/autoload.php
+
 
 # composer itself is not needed
 composer.phar
