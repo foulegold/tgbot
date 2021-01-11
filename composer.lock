@@ -7,50 +7,6 @@
     "content-hash": "19f62c4bb238808256151ec647d9026f",
     "packages": [
         {
-            "name": "aki/yii2-bot-telegram",
-            "version": "2.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/akbarjoudi/yii2-bot-telegram.git",
-                "reference": "4e429cf33ff302a9b350111e378e3c935a92b413"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/akbarjoudi/yii2-bot-telegram/zipball/4e429cf33ff302a9b350111e378e3c935a92b413",
-                "reference": "4e429cf33ff302a9b350111e378e3c935a92b413",
-                "shasum": ""
-            },
-            "require": {
-                "yiisoft/yii2": "*"
-            },
-            "type": "yii2-extension",
-            "autoload": {
-                "psr-4": {
-                    "aki\\telegram\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL-3.0+"
-            ],
-            "authors": [
-                {
-                    "name": "akbarjoudi",
-                    "email": "akbar.joody@gmail.ocm"
-                }
-            ],
-            "description": "bot telegram",
-            "keywords": [
-                "extension",
-                "yii2"
-            ],
-            "support": {
-                "issues": "https://github.com/akbarjoudi/yii2-bot-telegram/issues",
-                "source": "https://github.com/akbarjoudi/yii2-bot-telegram/tree/2.0.3"
-            },
-            "time": "2020-07-22T06:32:41+00:00"
-        },
-        {
             "name": "bower-asset/bootstrap",
             "version": "v3.4.1",
             "source": {
@@ -1166,49 +1122,6 @@
                 }
             ],
             "time": "2020-10-23T14:02:19+00:00"
-        },
-        {
-            "name": "vkcom/vk-php-sdk",
-            "version": "5.101.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/VKCOM/vk-php-sdk.git",
-                "reference": "46a8f76503050c0c6730359fc234a4d6448b8653"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/VKCOM/vk-php-sdk/zipball/46a8f76503050c0c6730359fc234a4d6448b8653",
-                "reference": "46a8f76503050c0c6730359fc234a4d6448b8653",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.1"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^6",
-                "vkcom/vk-api-schema": "^5.80.1"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "VK\\": "src/VK"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "VK PHP SDK",
-            "homepage": "https://github.com/VKCOM/vk-php-sdk",
-            "keywords": [
-                "sdk",
-                "vk"
-            ],
-            "support": {
-                "issues": "https://github.com/VKCOM/vk-php-sdk/issues",
-                "source": "https://github.com/VKCOM/vk-php-sdk/tree/5.101.0"
-            },
-            "time": "2019-08-16T12:13:20+00:00"
         },
         {
             "name": "yiisoft/yii2",
