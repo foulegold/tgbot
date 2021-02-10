@@ -2,7 +2,7 @@
 
 namespace app\models;
 
-use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "pages".
@@ -14,7 +14,7 @@ use Yii;
  * @property SocialNetworks $socialNetwork
  * @property TgSubscription[] $tgSubscriptions
  */
-class Pages extends \yii\db\ActiveRecord
+class Pages extends ActiveRecord
 {
     /**
      * {@inheritdoc}
