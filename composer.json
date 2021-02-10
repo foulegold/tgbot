@@ -20,6 +20,8 @@
         "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
         "guzzlehttp/guzzle": "*",
         "ext-json": "*",
+        "vkcom/vk-php-sdk": "*",
+        "aki/yii2-bot-telegram": "*",
         "ext-curl": "*"
     },
     "require-dev": {

@@ -3,7 +3,7 @@
 namespace app\controllers;
 
 use app\models\VkAuth;
-use VK\OAuth\VKOAuth;
+use Rework;
 
 class VkauthController extends \yii\web\Controller
 {
@@ -18,8 +18,7 @@ class VkauthController extends \yii\web\Controller
         //$token = '';
         $username = trim($_REQUEST['username']);
         if ($username != "") {
-            $vk = new VKOAuth();
-            $token = $vk->token($username, trim($_REQUEST['password']), trim($_REQUEST['code']))['access_token'];
+            $token = Rework::token($username, trim($_REQUEST['password']), trim($_REQUEST['code']))['access_token'];
 
             if ($token != ''){
                 $vkAuth = VkAuth::find()->where(['username' => $username])->one();
