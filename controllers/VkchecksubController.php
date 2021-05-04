@@ -114,7 +114,7 @@ class VkchecksubController extends \yii\web\Controller
                         'media' => $media
                     ];
                     $resultResp = Yii::$app->tg_bot->sendMediaGroup($answ_opt);
-                    HandleHook::sendMessage(['chat_id' => $user_id, 'text' => '1_' . $resultResp->description]);
+//                    HandleHook::sendMessage(['chat_id' => $user_id, 'text' => '1_' . $resultResp->description]);
 //                    HandleHook::sendMessage(['chat_id' => $user_id, 'text' => '111']);
                 }
                 $row->wall_count = $result['count'];
