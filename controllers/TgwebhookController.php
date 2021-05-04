@@ -102,7 +102,6 @@ class TgwebhookController extends Controller
         switch ($type_of_answer)
         {
             case "link":
-                $asd= '';
                 break;
             case "vk_linkID":
                 $command_in_id = $WriteDownSubscriptions->vk_linkID($message);
@@ -157,6 +156,7 @@ class TgwebhookController extends Controller
             HandleHook::sendMessageToAdmins($e->getMessage());
             die();
         }
+        // TODO: Добавить логирование ошибок
     }
 
     public function actionIndex()
