@@ -18,27 +18,26 @@ class TgwebhookController extends Controller
     {
         // TODO: Добавить обработку двойного получения нажатия кнопки
         if ($message == null) {
-            if (isset($result['callback_query'])) {
-                $message = $result['callback_query']['message'];
-                $text = str_ireplace("tg_", "", $result['callback_query']['data']);
+            if (isset($result->_callback_query)) {
+                $message = $result->_callback_query->message;
+                $text = str_ireplace("tg_", "", $message->data);
             } else {
-                $message = $result['message'];
-                $text = $message['text'];
+                $message = $result->_message;
+                $text = $message->text;
             }
         } else {
-            $text = $message['text'];
+            $text = $message->text;
         }
 
         // Обрабатываем только приватные сообщения
-        if ($message['chat']['type'] === "private") {
+        if ($message->_chat->type === "private") {
             $this->checkNewUser($message);
 
-            $lastlvl = TgCurrentlevel::find()->where(['user_id' => $message['chat']['id']])->one($this->db);
+            $lastlvl = TgCurrentlevel::find()->where(['user_id' => $message->_chat->id])->one($this->db);
 
             $command_in = trim(mb_strtolower($text, 'UTF-8'));
             $tgCommand = TgCommands::find()->where(['command_in' => $command_in])->one($this->db);
             $answers = $tgCommand->tgAnswers;
-            //HandleHook::sendMessage(['chat_id' => $message['chat']['id'], 'text' => "1_" . gettype($answers)]);
 
             if ($lastlvl != null){
                 if ($lastlvl->currentCommand->wait_answer == 1){
@@ -50,9 +49,9 @@ class TgwebhookController extends Controller
             $this->switchCaseCommandIn($command_in, $message, $answers, $result != null);
 
             if ($tgCommand != null) {
-                HandleHook::writeDownCurrentLevel($message['chat']['id'], $tgCommand->id);
+                HandleHook::writeDownCurrentLevel($message->_chat->id, $tgCommand->id);
             }
-            //HandleHook::sendMessage(['chat_id' => $message['chat']['id'], 'text' => "111__" . $res]);
+            HandleHook::sendMessage(['chat_id' => $message->_chat->id, 'text' => "111__"]);
        }
     }
 
@@ -81,7 +80,7 @@ class TgwebhookController extends Controller
             default:
                 //HandleHook::sendMessageToAdmins("Неопознанная команда от @" . $message['from']['username'] . "\nТекст сообщения: " . $text);
                 HandleHook::sendMessage([
-                    'chat_id' => $message['chat']['id'],
+                    'chat_id' => $message->_chat->id,
                     'text' => "Извините, но я не знаю такой команды.\nДля возвращения в главное меню нажмите /start"
                 ]);
                 //HandleHook::sendMessage(['chat_id' => 347860214, 'text' => "__" . $command_in]);
@@ -108,16 +107,16 @@ class TgwebhookController extends Controller
 
             default:
                 HandleHook::sendMessage([
-                    'chat_id' => $message['chat']['id'],
+                    'chat_id' => $message->_chat->id,
                     'text' => "Извините, но но получилось обработать ваш запрос.\nДля возвращения в главное меню нажмите /start"
                 ]);
                 break;
         }
 
         if ($command_in_id != '') {
-            HandleHook::writeDownCurrentLevel($message['chat']['id'], $command_in_id);
+            HandleHook::writeDownCurrentLevel($message->_chat->id, $command_in_id);
             $tgCommand = TgCommands::find()->where(['id' => $command_in_id])->one($this->db);
-            $message['text'] = $tgCommand->command_in;
+            $message->text = $tgCommand->command_in;
             $this->handleHook(null, $message);
 
             //HandleHook::sendMessage(['chat_id' => 347860214, 'text' => "1_" . $message['text']]);
@@ -126,15 +125,15 @@ class TgwebhookController extends Controller
 
     private function checkNewUser($message)
     {
-        $user = TgUsers::find()->where(['id' => $message['chat']['id']])->one($this->db);
+        $user = TgUsers::find()->where(['id' => $message->_chat->id])->one($this->db);
         if ($user == null){
             $userRow = new TgUsers;
-            $userRow->id = $message['chat']['id'];
-            $userRow->username = $message['from']['username'];
-            $userRow->first_name = $message['from']['first_name'];
-            $userRow->last_name = $message['from']['last_name'];
-            $userRow->language_code = $message['from']['language_code'];
-            $userRow->is_bot = (int)$message['from']['is_bot'];
+            $userRow->id = $message->_chat->id;
+            $userRow->username = $message->_from->username;
+            $userRow->first_name = $message->_from->first_name;
+            $userRow->last_name = $message->_from->last_name;
+            $userRow->language_code = $message->_from->language_code;
+            $userRow->is_bot = (int)$message->_from->is_bot;
             $userRow->save();
         }
     }
@@ -142,12 +141,19 @@ class TgwebhookController extends Controller
     public function actionHook()
     {
         try {
-            $result = $this->tg_bot->hook();
+            $result = $this->tg_bot->getInput();
         } catch (Exception $e) {
             HandleHook::sendMessageToAdmins($e->getMessage());
-            return;
+            die();
         }
-        $this->handleHook($result);
+//        var_dump($result);
+//        die();
+        try {
+            $this->handleHook($result);
+        } catch (Exception $e) {
+            HandleHook::sendMessageToAdmins($e->getMessage());
+            die();
+        }
     }
 
     public function actionIndex()

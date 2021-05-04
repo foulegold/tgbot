@@ -89,7 +89,7 @@ class WriteDownSubscriptions
     public function answerToUser($message, $answer, $redirect)
     {
         if ($redirect == static::REDIRECT_SUCCESS){
-            HandleHook::writeDownCurrentLevel($message['chat']['id'], 1);
+            HandleHook::writeDownCurrentLevel($message->_chat->id, 1);
             $answers = HandleHook::getAnswersForStartLevel($answer);
             $options = HandleHook::prepareOptions($message, $answers);
             HandleHook::sendMessage($options);
@@ -97,10 +97,10 @@ class WriteDownSubscriptions
             $res ='';
         } else {
             HandleHook::sendMessage([
-                'chat_id' => $message['chat']['id'],
+                'chat_id' => $message->_chat->id,
                 'text' => $answer
             ]);
-            $lastlvl = TgCurrentlevel::find()->where(['user_id' => $message['chat']['id']])->one($this->db);
+            $lastlvl = TgCurrentlevel::find()->where(['user_id' => $message->_chat->id])->one($this->db);
             $res = $lastlvl->currentCommand->previous_command_id;
         }
 
@@ -126,10 +126,10 @@ class WriteDownSubscriptions
             'filter' => 'owner'
         ]);
 
-        $tg_sub = TgSubscription::find()->where(['user_id' => $message['chat']['id'], 'page_id' => $page->page_id])->one($this->db);
+        $tg_sub = TgSubscription::find()->where(['user_id' => $message->_chat->id, 'page_id' => $page->page_id])->one($this->db);
         if ($tg_sub == null) {
             $tg_sub = new TgSubscription;
-            $tg_sub->user_id = $message['chat']['id'];
+            $tg_sub->user_id = $message->_chat->id;
             $tg_sub->page_id = $page->page_id;
         }
         $tg_sub->active = 1;

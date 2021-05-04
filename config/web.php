@@ -46,6 +46,7 @@ $config = [
         'tg_bot' => [
             'class' => 'aki\telegram\Telegram',
             'botToken' => '1345668162:AAFKdQmjtc474tWxlwMwm4Wi3e_qa5cFs0k',
+            'botUsername' => 'tg_bot',
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,

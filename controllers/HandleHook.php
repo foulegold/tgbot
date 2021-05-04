@@ -40,10 +40,10 @@ class HandleHook
         if (count($arr_buttons)) {
             $options['reply_markup'] = json_encode($reply_markup);
         }
-        $options['chat_id'] = $message['chat']['id'];
+        $options['chat_id'] = $message->_chat->id;
         $options['text'] = trim($text);
 //        $options['parse_mode'] = 'MarkdownV2';
-        //HandleHook::sendMessage(['chat_id' => $message['chat']['id'],'text' => "111_" . $text]);
+        //HandleHook::sendMessage(['chat_id' => $message->_chat->id,'text' => "111_" . $text]);
 
         return $options;
     }
@@ -74,9 +74,8 @@ class HandleHook
     {
         $options = HandleHook::prepareOptions($message, $answers);
         if ($edit) {
-            $options['message_id'] = $message['message_id'];
+            $options['message_id'] = $message->message_id;
             HandleHook::editMessageText($options);
-
         } else {
             HandleHook::sendMessage($options);
         }
@@ -92,9 +91,9 @@ class HandleHook
         $answers = HandleHook::getAnswersForStartLevel('Операция отменена');
         $options = HandleHook::prepareOptions($message, $answers);
 
-        Yii::$app->tg_bot->deleteMessage(['chat_id' => $message['chat']['id'], 'message_id' => $message['message_id']]);
+        Yii::$app->tg_bot->deleteMessage(['chat_id' => $message->_chat->id, 'message_id' => $message['message_id']]);
 
-        //HandleHook::sendMessage(['chat_id' => $message['chat']['id'],'text' => "111_" . $options['message_id']]);
+        //HandleHook::sendMessage(['chat_id' => $message->_chat->id,'text' => "111_" . $options['message_id']]);
         HandleHook::sendMessage($options);
     }
 
