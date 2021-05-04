@@ -30,8 +30,7 @@ class TgwebhookController extends Controller
             $text = $message->text;
         }
 
-//        var_dump($result);
-//        die();
+//        HandleHook::saveVarDump($message);
         // Обрабатываем только приватные сообщения
         if ($message->getChat()->type === "private") {
             $this->checkNewUser($message);
@@ -153,7 +152,7 @@ class TgwebhookController extends Controller
         try {
             $this->handleHook($result);
         } catch (Exception $e) {
-            HandleHook::sendMessageToAdmins($e->getMessage());
+//            HandleHook::sendMessageToAdmins($e->getMessage());
             die();
         }
         // TODO: Добавить логирование ошибок

@@ -167,4 +167,12 @@ class HandleHook
         $this->db->close();
         unset($this->db);
     }
+
+    public static function saveVarDump($text)
+    {
+        ob_start();
+        var_dump($text);
+        file_put_contents('../error.html', ob_get_clean());
+        die();
+    }
 }
