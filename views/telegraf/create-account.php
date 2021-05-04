@@ -1,13 +1,8 @@
 <?php
 
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use app\models\TelegrafAccounts;
 
-/* @var $this yii\web\View */
-/* @var $model app\models\TelegrafAccounts */
-/* @var $form ActiveForm */
+/* @var $account TelegrafAccounts */
+
+var_dump($account);
 ?>
-<div class="CreateAccount">
-asdasd
-
-</div><!-- CreateAccount -->

@@ -33,7 +33,7 @@ class TgwebhookController extends Controller
 //        HandleHook::saveVarDump($message);
         // Обрабатываем только приватные сообщения
         if ($message->getChat()->type === "private") {
-            $this->checkNewUser($message);
+            TgUsers::checkNewUser($message);
 
             $lastlvl = TgCurrentlevel::find()->where(['user_id' => $message->getChat()->id])->one($this->db);
 
@@ -121,21 +121,6 @@ class TgwebhookController extends Controller
             $this->handleHook(null, $message);
 
             //HandleHook::sendMessage(['chat_id' => 347860214, 'text' => "1_" . $message['text']]);
-        }
-    }
-
-    private function checkNewUser($message)
-    {
-        $user = TgUsers::find()->where(['id' => $message->getChat()->id])->one($this->db);
-        if ($user == null){
-            $userRow = new TgUsers;
-            $userRow->id = $message->getChat()->id;
-            $userRow->username = $message->getFrom()->username;
-            $userRow->first_name = $message->getFrom()->first_name;
-            $userRow->last_name = $message->getFrom()->last_name;
-            $userRow->language_code = $message->getFrom()->language_code;
-            $userRow->is_bot = (int)$message->getFrom()->is_bot;
-            $userRow->save();
         }
     }
 

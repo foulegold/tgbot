@@ -5,7 +5,7 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "telegraf_accaunts".
+ * This is the model class for table "telegraf_accounts".
  *
  * @property int $id
  * @property string $short_name
@@ -50,5 +50,18 @@ class TelegrafAccounts extends \yii\db\ActiveRecord
             'auth_url' => 'Auth Url',
             'page_count' => 'Page Count',
         ];
+    }
+
+    public static function addNewRow($account)
+    {
+        $TelegrafAccounts               = new TelegrafAccounts();
+        $TelegrafAccounts->short_name   = $account->getShortName();
+        $TelegrafAccounts->author_name  = $account->getAuthorName();
+        $TelegrafAccounts->author_url   = $account->getAuthorUrl();
+        $TelegrafAccounts->access_token = $account->getAccessToken();
+        $TelegrafAccounts->auth_url     = $account->getAuthUrl();
+        $TelegrafAccounts->page_count   = $account->getPageCount();
+        $TelegrafAccounts->save();
+        return $TelegrafAccounts;
     }
 }

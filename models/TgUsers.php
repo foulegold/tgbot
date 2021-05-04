@@ -88,4 +88,19 @@ class TgUsers extends \yii\db\ActiveRecord
     {
         return $this->hasMany(TgSubscription::className(), ['user_id' => 'id']);
     }
+
+    public static function checkNewUser($message)
+    {
+        $user = TgUsers::findOne(['id' => $message->getChat()->id]);
+        if ($user == null){
+            $newUser = new TgUsers;
+            $newUser->id = $message->getChat()->id;
+            $newUser->username = $message->getFrom()->username;
+            $newUser->first_name = $message->getFrom()->first_name;
+            $newUser->last_name = $message->getFrom()->last_name;
+            $newUser->language_code = $message->getFrom()->language_code;
+            $newUser->is_bot = (int)$message->getFrom()->is_bot;
+            $newUser->save();
+        }
+    }
 }
