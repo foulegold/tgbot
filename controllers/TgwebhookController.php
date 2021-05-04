@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use aki\telegram\types\Message;
 use app\models\TgCommands;
 use app\models\TgCurrentlevel;
 use app\models\TgUsers;
@@ -19,8 +20,8 @@ class TgwebhookController extends Controller
         // TODO: Добавить обработку двойного получения нажатия кнопки
         if ($message == null) {
             if ($result->getCallback_query() != null) {
-                $message = $result->getCallback_query()->message;
-                $text = str_ireplace("tg_", "", $message->data);
+                $message = new Message($result->getCallback_query()->message);
+                $text = str_ireplace("tg_", "", $result->getCallback_query()->data);
             } else {
                 $message = $result->getMessage();
                 $text = $message->text;
@@ -29,6 +30,8 @@ class TgwebhookController extends Controller
             $text = $message->text;
         }
 
+//        var_dump($result);
+//        die();
         // Обрабатываем только приватные сообщения
         if ($message->getChat()->type === "private") {
             $this->checkNewUser($message);
@@ -42,7 +45,7 @@ class TgwebhookController extends Controller
             if ($lastlvl != null){
                 if ($lastlvl->currentCommand->wait_answer == 1){
                     $this->switchCaseWaitAnswer($lastlvl, $message);
-                    return;
+                    die();
                 }
             }
 
@@ -51,7 +54,7 @@ class TgwebhookController extends Controller
             if ($tgCommand != null) {
                 HandleHook::writeDownCurrentLevel($message->getChat()->id, $tgCommand->id);
             }
-            HandleHook::sendMessage(['chat_id' => $message->getChat()->id, 'text' => "111__"]);
+//            HandleHook::sendMessage(['chat_id' => $message->getChat()->id, 'text' => "111__"]);
        }
     }
 

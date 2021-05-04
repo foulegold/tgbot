@@ -42,7 +42,6 @@ class HandleHook
         }
         $options['chat_id'] = $message->getChat()->id;
         $options['text'] = trim($text);
-//        $options['parse_mode'] = 'MarkdownV2';
         //HandleHook::sendMessage(['chat_id' => $message->getChat()->id,'text' => "111_" . $text]);
 
         return $options;
@@ -91,7 +90,7 @@ class HandleHook
         $answers = HandleHook::getAnswersForStartLevel('Операция отменена');
         $options = HandleHook::prepareOptions($message, $answers);
 
-        Yii::$app->tg_bot->deleteMessage(['chat_id' => $message->getChat()->id, 'message_id' => $message['message_id']]);
+        Yii::$app->tg_bot->deleteMessage(['chat_id' => $message->getChat()->id, 'message_id' => $message->message_id]);
 
         //HandleHook::sendMessage(['chat_id' => $message->getChat()->id,'text' => "111_" . $options['message_id']]);
         HandleHook::sendMessage($options);
@@ -99,7 +98,17 @@ class HandleHook
 
     public static function getAnswersForStartLevel($text)
     {
-        $answers = TgAnswers::findAll(['command_in_id' => 1, 'itsa_button' => 1, 'active' => 1]);
+        $answers = [];
+        $answers_model = TgAnswers::findAll(['command_in_id' => 1, 'itsa_button' => 1, 'active' => 1]);
+        foreach ($answers_model as $answ_model) {
+            $answ = [];
+            foreach ($answ_model as $key => $val) {
+                $answ[$key] = $val;
+            }
+            if ($answ != '') {
+                $answers[] = $answ;
+            }
+        }
         $answers[] = ['answer' => $text, 'itsa_button' => '0', 'inline_button' => '0'];
         return $answers;
     }
@@ -113,13 +122,6 @@ class HandleHook
 //            HandleHook::sendMessage(['chat_id' => $options['chat_id'], 'text' => "4_" . $message['text']]);
             // TODO: Обработать ошибки при отправке сообщения (например проверить не остановил ли юзер бота)
         //}
-    }
-
-    public static function stopPoll($options)
-    {
-        $opt = ['chat_id' => $options['chat_id'], 'message_id' => $options['message_id']];
-        $resultResp = Yii::$app->tg_bot->stopPoll($opt);
-        //HandleHook::sendMessage(['chat_id' => $options['chat_id'], 'text' => "1_" . $resultResp->description]);
     }
 
     public static function sendMessage($options)

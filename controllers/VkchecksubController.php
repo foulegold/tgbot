@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use aki\telegram\types\InputMedia\InputMediaPhoto;
 use app\models\TgSubscription;
 use app\models\VkAuth;
 use app\models\VkErrors;
@@ -42,7 +43,7 @@ class VkchecksubController extends \yii\web\Controller
                     'filter' => 'owner'
                 ]);
                 $newPostsCount = $result['count'] - $row->wall_count;
-                $newPostsCount=1;
+                $newPostsCount = 1;
                 if ($newPostsCount <= 0){
                     // TODO: Сообщить, что нет новых постов. На случай, когда ручной запрос.
                     // Ничего не делать, если это автоматический запрос
@@ -94,15 +95,18 @@ class VkchecksubController extends \yii\web\Controller
                 }
                 HandleHook::sendMessage($answ_opt);
 
+//                var_dump($photo_url);
+//                die();
+
                 // Если в посте больше одной фотки, то отправляем их отдельным сообщением
                 if (count($photo_url) > 1) {
                     // TODO: Добавить обработку количества фоток. Разрешено отправлять по 2-10 штук.
                     $media = [];
                     foreach ($photo_url as $val){
-                        $media[] = [
+                        $media[] = new InputMediaPhoto([
                             'type' => 'photo',
                             'media' => $val
-                        ];
+                        ]);
                     }
 
                     $answ_opt = [

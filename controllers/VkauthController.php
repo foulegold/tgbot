@@ -3,7 +3,7 @@
 namespace app\controllers;
 
 use app\models\VkAuth;
-use Rework;
+use app\models\Rework;
 
 class VkauthController extends \yii\web\Controller
 {

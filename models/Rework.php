@@ -1,4 +1,5 @@
 <?php
+namespace app\models;
 
 use VK\Exceptions\VKClientException;
 use VK\Exceptions\VKOAuthException;
