@@ -32,7 +32,6 @@ class VkchecksubController extends \yii\web\Controller
         $result_arr = [];
         $error_code = '';
         $vk = new VKApiClient();
-//        HandleHook::sendMessage(['chat_id' => $user_id, 'text' => "11111\nqweqwe"]);
         foreach ($TgSubscriptions as $row){
             try {
                 // Сначала запрашиваем 1 пост, чтобы узнать общее количество.
@@ -43,7 +42,7 @@ class VkchecksubController extends \yii\web\Controller
                     'filter' => 'owner'
                 ]);
                 $newPostsCount = $result['count'] - $row->wall_count;
-                $newPostsCount = 1;
+                $newPostsCount = 2;
                 if ($newPostsCount <= 0){
                     // TODO: Сообщить, что нет новых постов. На случай, когда ручной запрос.
                     // Ничего не делать, если это автоматический запрос
@@ -65,65 +64,61 @@ class VkchecksubController extends \yii\web\Controller
 //                    $post_text = str_ireplace('\n', '\n', $post_text);
                     $text_photo = '';
                     $photo_url = [];
-                    foreach ($item_row['attachments'] as $attach) {
-                        if ($attach['type'] == 'photo') {
-                            $max_height = 0;
-                            $max_size = $attach['photo']['sizes'][0];
-                            foreach ($attach['photo']['sizes'] as $size) {
-                                if ($size['height'] > $max_height) {
-                                    $max_height = $size['height'];
-                                    $max_size = $size;
+                    if ($item_row['attachments']) {
+                        foreach ($item_row['attachments'] as $attach) {
+                            if ($attach['type'] == 'photo') {
+                                $max_height = 0;
+                                $max_size = $attach['photo']['sizes'][0];
+                                foreach ($attach['photo']['sizes'] as $size) {
+                                    if ($size['height'] > $max_height) {
+                                        $max_height = $size['height'];
+                                        $max_size = $size;
+                                    }
                                 }
-                            }
 
-                            $photo_url[] = $max_size['url'];
+                                $photo_url[] = $max_size['url'];
+                            }
                         }
                     }
-                }
-                foreach ($photo_url as $val) {
-                    $text_photo .= '[ ](' . $val . ')';
-                }
-
-                // TODO: Обработать текст поста на символы, используемые в parse_mode
-                $answ_opt = [
-                    'chat_id' => $user_id,
-                    'text' => $item_row['text'],
-                    'parse_mode' => 'Markdown',
-                ];
-                if (count($photo_url) <= 1) {
-                    $answ_opt['text'] = $text_photo . $item_row['text'];
-                }
-                HandleHook::sendMessage($answ_opt);
-
-//                var_dump($photo_url);
-//                die();
-
-                // Если в посте больше одной фотки, то отправляем их отдельным сообщением
-                if (count($photo_url) > 1) {
-                    // TODO: Добавить обработку количества фоток. Разрешено отправлять по 2-10 штук.
-                    $media = [];
-                    foreach ($photo_url as $val){
-                        $media[] = new InputMediaPhoto([
-                            'type' => 'photo',
-                            'media' => $val
-                        ]);
+                    foreach ($photo_url as $val) {
+                        $text_photo .= '[ ](' . $val . ')';
                     }
 
+                    // TODO: Обработать текст поста на символы, используемые в parse_mode
                     $answ_opt = [
                         'chat_id' => $user_id,
-                        'media' => $media
+                        'text' => $item_row['text'],
+                        'parse_mode' => 'Markdown',
                     ];
-                    $resultResp = Yii::$app->tg_bot->sendMediaGroup($answ_opt);
-//                    HandleHook::sendMessage(['chat_id' => $user_id, 'text' => '1_' . $resultResp->description]);
-//                    HandleHook::sendMessage(['chat_id' => $user_id, 'text' => '111']);
-                }
-                $row->wall_count = $result['count'];
-                $row->save();
+                    if (count($photo_url) <= 1) {
+                        $answ_opt['text'] = $text_photo . $item_row['text'];
+                    }
+                    HandleHook::sendMessage($answ_opt);
 
-                $result_arr[$row->page_id] = $result;
+                    // Если в посте больше одной фотки, то отправляем их отдельным сообщением
+                    if (count($photo_url) > 1) {
+                        // TODO: Добавить обработку количества фоток. Разрешено отправлять по 2-10 штук.
+                        $media = [];
+                        foreach ($photo_url as $val){
+                            $media[] = new InputMediaPhoto([
+                                'type' => 'photo',
+                                'media' => $val
+                            ]);
+                        }
+
+                        $answ_opt = [
+                            'chat_id' => $user_id,
+                            'media' => $media
+                        ];
+                        $resultResp = Yii::$app->tg_bot->sendMediaGroup($answ_opt);
+                    }
+                    $row->wall_count = $result['count'];
+                    $row->save();
+
+                    $result_arr[$row->page_id] = $result;
+                }
             } catch (VKApiException $e) {
                 $error_code = $e->getErrorCode();
-    //            HandleHook::sendMessage(['chat_id' => 347860214, 'text' => '1_' . $e->getErrorCode()]);
             } catch (VKClientException $e) {
                 // TODO: Добавить обработчик этого события
                 $error_code = $e->getErrorCode();
@@ -136,7 +131,6 @@ class VkchecksubController extends \yii\web\Controller
 //                    $result[$row->page_id]['error_code'] = $error->error_msg_ru . " \n" . $error->description_ru;
 //                }
             }
-
         }
         return $this->render('index', ['result_arr' => $result_arr]);
     }
