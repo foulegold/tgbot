@@ -116,7 +116,8 @@ class HandleHook
     public static function editMessageText($options)
     {
         //if ($options['text'] != $message['text']) {
-            $resultResp = Yii::$app->tg_bot->editMessageText($options);
+//            $resultResp =
+                Yii::$app->tg_bot->editMessageText($options);
             //HandleHook::sendMessage(['chat_id' => $options['chat_id'], 'text' => "1_" . $resultResp->description]);
 //            HandleHook::sendMessage(['chat_id' => $options['chat_id'], 'text' => "3_" . $options['text']]);
 //            HandleHook::sendMessage(['chat_id' => $options['chat_id'], 'text' => "4_" . $message['text']]);
