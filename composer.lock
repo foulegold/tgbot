@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "85dd78aaf97b5d76db4fdfb74a09411e",
+    "content-hash": "cbcbb052f786cde15cf3e39e3993a3e6",
     "packages": [
         {
             "name": "aki/yii2-bot-telegram",
@@ -710,62 +710,6 @@
                 "source": "https://github.com/ralouphie/getallheaders/tree/develop"
             },
             "time": "2019-03-08T08:55:37+00:00"
-        },
-        {
-            "name": "ssitdikov/telegraph-api-client",
-            "version": "v0.1.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ssitdikov/telegraph-api-client.git",
-                "reference": "f698d28de54cd8518ad000f01178e2c019342e4c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ssitdikov/telegraph-api-client/zipball/f698d28de54cd8518ad000f01178e2c019342e4c",
-                "reference": "f698d28de54cd8518ad000f01178e2c019342e4c",
-                "shasum": ""
-            },
-            "require": {
-                "guzzlehttp/guzzle": "^6.3",
-                "php": ">=7.0"
-            },
-            "require-dev": {
-                "codacy/coverage": "^1.4",
-                "php-coveralls/php-coveralls": "^1.0",
-                "phpmd/phpmd": "^2.6",
-                "phpunit/phpcov": "^5.0",
-                "phpunit/phpunit": "^7.2"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "SSitdikov\\TelegraphAPI\\": "src/",
-                    "SSitdikov\\TelegraphAPI\\Tests\\": "tests/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Salavat Sitdikov",
-                    "email": "sitsalavat@gmail.com"
-                }
-            ],
-            "description": "Simple Telegra.ph API PHP Client",
-            "keywords": [
-                "api",
-                "online",
-                "php",
-                "telegram",
-                "telegraph"
-            ],
-            "support": {
-                "issues": "https://github.com/ssitdikov/telegraph-api-client/issues",
-                "source": "https://github.com/ssitdikov/telegraph-api-client/tree/master"
-            },
-            "time": "2018-06-19T12:08:26+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
