@@ -31,7 +31,7 @@ class WriteDownSubscriptions
     public function vk_linkID($message)
     {
         // Обрабатываем ссылку, чтобы получить ID
-        $pageID = $this->handleLink(trim($message['text']));
+        $pageID = $this->handleLink(trim($message->text));
 //        HandleHook::sendMessage(['chat_id' => 347860214, 'text' => "1_" . $pageID]);
 
         // TODO: Обработать получение группы ВК, не только страницы
@@ -93,7 +93,6 @@ class WriteDownSubscriptions
             $answers = HandleHook::getAnswersForStartLevel($answer);
             $options = HandleHook::prepareOptions($message, $answers);
             HandleHook::sendMessage($options);
-//            HandleHook::sendMessage(['chat_id' => 347860214, 'text' => '____']);
             $res ='';
         } else {
             HandleHook::sendMessage([
@@ -139,16 +138,26 @@ class WriteDownSubscriptions
 
     public function handleLink($text)
     {
+        //HandleHook::saveVarDump(parse_url($text));
         $pageID = '';
-        $mas = explode('/', $text);
-        if (count($mas) == 1){
-            $pageID = str_replace('@', '', $mas[0]);
-        } else {
-            $masID = explode('?', $mas[count($mas) - 1]);
-            $pageID = $masID[0];
-            if ($pageID == ''){
-                $masID = explode('?', $mas[count($mas) - 2]);
+        $parse_url = parse_url($text);
+        if (isset($parse_url['path']) and $parse_url['path'] != '') {
+            $pageID = $parse_url['path'];
+            $pageID = str_replace('@', '', $pageID);
+            $pageID = str_replace('?', '', $pageID);
+            $pageID = str_replace('/', '', $pageID);
+        }
+        if ($pageID == '') {
+            $mas = explode('/', $text);
+            if (count($mas) == 1) {
+                $pageID = str_replace('@', '', $mas[0]);
+            } else {
+                $masID = explode('?', $mas[count($mas) - 1]);
                 $pageID = $masID[0];
+                if ($pageID == '') {
+                    $masID = explode('?', $mas[count($mas) - 2]);
+                    $pageID = $masID[0];
+                }
             }
         }
         return $pageID;

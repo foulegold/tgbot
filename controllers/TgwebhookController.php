@@ -85,7 +85,7 @@ class TgwebhookController extends Controller
                     'chat_id' => $message->getChat()->id,
                     'text' => "Извините, но я не знаю такой команды.\nДля возвращения в главное меню нажмите /start"
                 ]);
-                //HandleHook::sendMessage(['chat_id' => 347860214, 'text' => "__" . $command_in]);
+                HandleHook::sendMessage(['chat_id' => 347860214, 'text' => "__" . $command_in]);
                 break;
         }
     }
@@ -97,12 +97,12 @@ class TgwebhookController extends Controller
         //HandleHook::sendMessage(['chat_id' => 347860214, 'text' => "__" . $type_of_answer]);
 
         // TODO: Убрать ожидание ответа при нажатии стартовых кнопок
-        $WriteDownSubscriptions = new WriteDownSubscriptions();
         switch ($type_of_answer)
         {
             case "link":
                 break;
             case "vk_linkID":
+                $WriteDownSubscriptions = new WriteDownSubscriptions();
                 $command_in_id = $WriteDownSubscriptions->vk_linkID($message);
                 break;
 
@@ -137,7 +137,8 @@ class TgwebhookController extends Controller
         try {
             $this->handleHook($result);
         } catch (Exception $e) {
-//            HandleHook::sendMessageToAdmins($e->getMessage());
+            HandleHook::sendMessageToAdmins($e->getMessage());
+//            HandleHook::saveVarDump($e->getMessage());
             die();
         }
         // TODO: Добавить логирование ошибок

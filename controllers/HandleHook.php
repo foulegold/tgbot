@@ -168,11 +168,11 @@ class HandleHook
         unset($this->db);
     }
 
-    public static function saveVarDump($text)
+    public static function saveVarDump($text, $die = true)
     {
         ob_start();
         var_dump($text);
         file_put_contents('../error.html', ob_get_clean());
-        die();
+        if ($die) die();
     }
 }
