@@ -11,7 +11,7 @@ use Yii;
  * @property int $user_id ID tg пользователя
  * @property int $page_id ID профиля
  * @property int $active Активность
- * @property int $wall_count
+ * @property int $lastPostId
  *
  * @property TgUsers $user
  * @property Pages $page
@@ -33,7 +33,7 @@ class TgSubscription extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'page_id'], 'required'],
-            [['user_id', 'page_id', 'active', 'wall_count'], 'integer'],
+            [['user_id', 'page_id', 'active', 'lastPostId'], 'integer'],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => TgUsers::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['page_id'], 'exist', 'skipOnError' => true, 'targetClass' => Pages::className(), 'targetAttribute' => ['page_id' => 'page_id']],
         ];
@@ -49,7 +49,7 @@ class TgSubscription extends \yii\db\ActiveRecord
             'user_id' => 'User ID',
             'page_id' => 'Page ID',
             'active' => 'Active',
-            'wall_count' => 'Wall Count',
+            'lastPostId' => 'Last Post ID',
         ];
     }
 

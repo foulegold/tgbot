@@ -132,7 +132,9 @@ class WriteDownSubscriptions
             $tg_sub->page_id = $page->page_id;
         }
         $tg_sub->active = 1;
-        $tg_sub->wall_count = $result['count'];
+        if (count($result['items']) > 0) {
+            $tg_sub->lastPostId = $result['items'][0]['id'];
+        }
         $tg_sub->save();
     }
 
