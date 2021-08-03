@@ -163,7 +163,7 @@ class VkchecksubController extends \yii\web\Controller
         $this->db->open();
         $this->tg_bot = Yii::$app->tg_bot;
 
-        $vkAuth = VkAuth::find()->where(['username' => '79231656362'])->one($this->db);
+        $vkAuth = VkAuth::find()->where(['username' => '792316563621'])->one($this->db);
         $this->vkToken = $vkAuth->token;
     }
 
